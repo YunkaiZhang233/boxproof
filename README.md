@@ -20,6 +20,8 @@ This is a **modified version** of Paul Taylor's original `boxproof.sty` package 
 2. Place it in the same folder as your `.tex` file
 3. Add `\usepackage{boxproof}` (or `\input{boxproof.sty}`) to your document preamble
 
+Note: The modified version requires the `amssymb` package to be installed. Don't worry about this if you are using Overleaf.
+
 ## Quick Start
 
 Here's a minimal example:
@@ -68,7 +70,7 @@ When you assume something and derive a conclusion within a box:
 
 ### 2. Case Analysis Boxes: `\openAlt` ... `\splitAlt` ... `\closeAlt`
 
-**Sample Usage**: ∨E, ↔I
+**Sample Usage**: ∨E
 
 When proving something by considering different cases, with boxes sharing a vertical line:
 

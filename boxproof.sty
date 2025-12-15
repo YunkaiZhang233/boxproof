@@ -171,6 +171,7 @@
 %%  4 June 1993.
 %%
 %%
+\RequirePackage{amssymb}
 \message{<Paul Taylor's Proof Boxes, 8 November 1993>}\edef\proofboxrestoreat
 {\noexpand\catcode`\noexpand\@\the\catcode`\@}\catcode`\@=11 \count@\year
 \multiply\count@12 \advance\count@\month\ifnum\count@> 23999 \message{ ******
@@ -285,7 +286,8 @@ boxproof.tex}\fi\let\pb@A\+\let\+\relax\let\pb@B\(\let\pb@C\)\def\pb@D{\pb@B
 %% Premises and assumptions
 \def\premise{\hbox{premise}}
 \def\asm{\hbox{asm}}
-\def\lem{\hbox{LEM}}
+\def\lawofem{\hbox{LEM}}
+\def\lem{\hbox{lemma}}
 %%
 %% Print the names of the introduction and elimination rules, for example:
 %%  \begin{quote}
@@ -303,15 +305,17 @@ boxproof.tex}\fi\let\pb@A\+\let\+\relax\let\pb@B\(\let\pb@C\)\def\pb@D{\pb@B
 %% if and only if
 %% forall
 %% exists
-\def\andintro{\land I}\def\andelim{\land E}
-\def\orintro{\lor I}\def\orelim{\lor E}
-\def\impliesintro{\implic I}\def\implieselim{\implic E}
-\def\notintro{\lnot I}\def\notelim{\lnot E}
-\def\doublenegintro{\lnot\lnot I}\def\doublenegelim{\lnot\lnot E}
-\def\bottomintro{\bot I}\def\bottomelim{\bot E}
-\def\iffintro{\leftrightarrow I}\def\iffelim{\leftrightarrow E}
-\def\forallintro{\forall I}\def\forallelim{\forall E}
-\def\existsintro{\exists I}\def\existselim{\exists E}%%
+%% tick
+\def\andintro{{{\land} {I}}}\def\andelim{{{\land} {E}}}
+\def\orintro{{{\lor} {I}}}\def\orelim{{{\lor} {E}}}
+\def\impliesintro{{{\implic} {I}}}\def\implieselim{{{\implic} {E}}}
+\def\notintro{{{\lnot} {I}}}\def\notelim{{{\lnot} {E}}}
+\def\doublenegintro{{{\lnot\lnot} {I}}}\def\doublenegelim{{{\lnot\lnot} {E}}}
+\def\bottomintro{{{\bot} {I}}}\def\bottomelim{{{\bot} {E}}}
+\def\iffintro{{{\leftrightarrow} {I}}}\def\iffelim{{{\leftrightarrow} {E}}}
+\def\forallintro{{{\forall} {I}}}\def\forallelim{{{\forall} {E}}}
+\def\existsintro{{{\exists} {I}}}\def\existselim{{{\exists} {E}}}
+\def\tick#1{{{\checkmark}{(#1)}}}
 %% Recall that in \TeX\ the logical connectives and quantifiers are called
 %%  \begin{center}
 %%    \verb/\lor/ $\lor$\quad

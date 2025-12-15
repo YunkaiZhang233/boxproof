@@ -1,0 +1,168 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{hyperref}
+\usepackage{boxproof}
+\usepackage{minted}
+\usepackage[svgnames]{xcolor}
+\usepackage[a4paper, margin=1in]{geometry}
+
+
+\title{\textit{Boxproof} by Paul Taylor with Customisations}
+\author{Yunkai Zhang}
+\date{December 2025}
+
+\def\meta#1{\mbox{$\langle\hbox{#1}\rangle$}}
+
+\begin{document}
+
+\maketitle
+
+\section{Declarations}
+
+This document is a short introduction to the \textit{Boxproof} package by Paul Taylor, with some customisations made by Yunkai Zhang. The original package can be found at \url{https://www.paultaylor.eu/proofs/}. See the original documentation for full details. This modified package can be found at \url{https://github.com/YunkaiZhang233/boxproof}.
+
+\textbf{The modified version requires the \textit{amssymb} package to be included in your LaTeX document preamble.} Don't worry about this if you are using Overleaf, but if you are compiling LaTeX documents locally, make sure you have the amssymb package installed.
+
+This is a customised version of the \textit{Boxproof} package, which includes additional features and modifications to suit Imperial College London's COMP40018 course requirements for the logic part. Therefore, the discussion of usage and examples in this file will be limited to those relevant to the course.
+
+\section{Quick Showcase Preview}
+
+
+In a nutshell, this allows you to write proofs of natural deduction covered in the course in LaTeX in a structured way, and it will format the proof nicely for you without much effort.
+
+So you can write this proof of Pierce's Law as shown in the second last page of lecture 6:
+
+\begin{proofbox}
+  \open
+    \: (\phi \implic \psi) \implic \phi \= \asm \\
+    \: \phi \lor \neg \phi \= \lem \\
+    \openAlt
+      \: \phi \= \asm \\
+      \: \phi \= \tick{3} \\
+    \splitAlt
+      \: \neg\phi \= \asm \\
+      \open
+        \: \phi \= \asm \\
+        \: \bot \= \notelim(6, 5) \\
+        \: \psi \= \bottomelim(7) \\
+      \close
+      \: \phi \implic \psi  \= \impliesintro(6, 8) \\
+      \: \phi \= \implieselim(1, 9) \\
+    \closeAlt
+    \: \phi \= \orelim(2, 3-4, 5-10) \\
+  \close
+  \: ((\phi \implic \psi) \implic \phi) \implic \phi \= \impliesintro(1, 11) \\
+  \\
+\end{proofbox}
+
+with the following LaTeX code:
+
+\begin{verbatim}
+\begin{proofbox}
+  \open
+    \: (\phi \implic \psi) \implic \phi \= \asm \\
+    \: \phi \lor \neg \phi \= \lem \\
+    \openAlt
+      \: \phi \= \asm \\
+      \: \phi \= \tick{3} \\
+    \splitAlt
+      \: \neg\phi \= \asm \\
+      \open
+        \: \phi \= \asm \\
+        \: \bot \= \notelim(6, 5) \\
+        \: \psi \= \bottomelim(7) \\
+      \close
+      \: \phi \implic \psi  \= \impliesintro(6, 8) \\
+      \: \phi \= \implieselim(1, 9) \\
+    \closeAlt
+    \: \phi \= \orelim(2, 3-4, 5-10) \\
+  \close
+  \: ((\phi \implic \psi) \implic \phi) \implic \phi \= \impliesintro(1, 11) \\
+  \\
+\end{proofbox}  
+\end{verbatim}
+
+
+
+\section{Basic Syntax}
+
+Each line is of the form:
+
+  \begin{center}
+     \meta{name}
+     \verb/\:/ \meta{formula}
+     \verb/\=/ \meta{reason}
+     \verb/\\/
+  \end{center}
+
+Note that there are other variables involved in the original package, but they are not discussed here for simplicity.
+
+Also, \meta{name} is optional. So you can simply write a line as:
+
+\begin{center}
+    \verb/\:/ \meta{formula}
+    \verb/\=/ \meta{reason}
+    \verb/\\/
+\end{center}
+
+You can understand \meta{name} as labelling each line with a unique identifier, so you don't have to refer to this line by its line number. \meta{formula} is the logical formula you are proving, and \meta{reason} is the justification for that formula.
+
+\section{Writing a Proof}
+
+\subsection{Proof Structure}
+To start a proof, wrap your whole proof with \verb/\begin{proofbox}/...\verb/\end{proofbox}/.
+
+For each new line, write your proof as the basic syntax above.
+
+Now, if you need to start a proof \textit{box} (for example, when you are assuming something):
+\begin{itemize}
+  \item Use \verb/\open/ and \verb/\close/ to start a new single-column box, as you would need for rules like $\andintro$, $\implieselim$, etc.
+  \item Use \verb/\openAlt/, \verb/\splitAlt/, and \verb/\closeAlt/ to start a new two-column box, as you would need for rules like $\orelim$.
+\end{itemize}
+
+The original package also uses \verb/\( ... \)/ and \verb/\[ ... \]/ to start and end boxes, but these symbols are reserved for different meanings in modern editors, so I altered the syntax. However, you can still use them if you want to.
+
+Just beware that due to this reason, don't use \verb/\( ... \)/ and \verb/\[ ... \]/ within the proofbox-wrapped environments, as they will have clashes. For the sake of this course you won't need to do so. However, feel free to use them outside of the proofbox environment.
+
+\textbf{Don't insert extra blank lines as this breaks the proofs!} If you really need actual blank lines, use \verb/\\/.
+
+\subsection{Notations and Symbols}
+By default, everything is in math-mode. If you need to write text, use \verb/\hbox{your text}/. Note that \verb/\premise/, \verb/\asm/, \verb/lawofem/, and \verb/\lem/ are predefined in this customised package to represent "premise", "assumption", "LEM", and "lemma" respectively, so no need to wrap them in \verb/\hbox{}/.
+
+For a nicer identation, the original author also provides \verb/All/ and \verb/Some/ to wrap around the FOL formulas when quantifiers are involved. Therefore, 
+
+\begin{quote}
+\verb/\All x:X. \phi(x)/ gives you\quad $\All x:X. \phi(x)$ instead of $\forall x:X. \phi(x)$ \\
+\verb/\Some x:X. \phi(x)/ gives you\quad $\Some x:X. \phi(x)$ instead of $\exists x:X. \phi(x)$
+\end{quote}
+
+It is totally optional to use them, but it looks nicer.
+
+
+
+\subsection{List of Shorthands for Rules}
+\begin{itemize}
+  \item \verb/\andintro/ for $\andintro$, \verb/\andelim/ for $\andelim$
+  \item \verb/\orintro/ for $\orintro$, \verb/\orelim/ for $\orelim$
+  \item \verb/\impliesintro/ for $\impliesintro$, \verb/\implieselim/ for $\implieselim$
+  \item \verb/\notintro/ for $\notintro$, \verb/\notelim/ for $\notelim$
+  \item \verb/\doublenegintro/ for $\doublenegintro$, \verb/\doublenegelim/ for $\doublenegelim$
+  \item \verb/\bottomintro/ for $\bottomintro$, \verb/\bottomelim/ for $\bottomelim$
+  \item \verb/\iffintro/ for $\iffintro$, \verb/\iffelim/ for $\iffelim$
+  \item \verb/\forallintro/ for $\forallintro$, \verb/\forallelim/ for $\forallelim$
+  \item \verb/\existsintro/ for $\existsintro$, \verb/\existselim/ for $\existselim$
+  \item \verb/\tick{n}/ for $\tick{n}$ where \textit{n} is the line number you are ticking off
+\end{itemize}
+
+\section{Example Usages}
+
+Here are some exemplar natural deduction proofs rendered with this modified package, taken from unassessed PMT exercises. You can find the source code in the tex file.
+
+\subsection{PMT Logic Exercise 4, Question 1}
+Let $A$ and $B$ be formulas in propositional logic. Using natural deduction, prove that $(A \land B) \lor A \leftrightarrow A \land (A \lor B)$ is a theorem.
+
+% \begin{proofbox}
+
+% \end{proofbox}
+
+\end{document}
