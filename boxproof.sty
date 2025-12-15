@@ -7,6 +7,23 @@
 %%                      +44 71 589 5111 {\em ext.} 5057\\
 %%                      {\tt<pt@doc.ic.ac.uk>}}
 %%\date{8 November 1993}
+%%
+%% MODIFIED VERSION
+%% This file is a modified version of Paul Taylor's original boxproof.sty
+%% The original was distributed publicly via Paul Taylor's website https://www.paultaylor.eu/proofs/
+%%
+%% Modifications by: Yunkai Zhang
+%% Date: 15 December 2025
+%% Changes:
+%%   - Added alternative syntax for proof boxes:
+%%     * \open .. \close for single-column boxes (alternative to \[ .. \])
+%%     * \openInd .. \splitInd .. \closeInd for separate boxes (alternative to \( .. \* .. \))
+%%     * \openAlt .. \splitAlt .. \closeAlt for stuck-together boxes (alternative to \( .. \+ .. \))
+%%   - Added line numbering for stuck-together boxes for better clarification on proof steps
+%%
+%% These modifications preserve all original functionality while providing
+%% additional notation options for users.
+%%
 %% % to get the provisional user documentation do
 %% % grep ^%% boxproof.tex | sed 's/^%*//' > boxproof-manual.tex
 %%\documentstyle{article}
