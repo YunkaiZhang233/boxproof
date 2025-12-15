@@ -282,6 +282,9 @@ boxproof.tex}\fi\let\pb@A\+\let\+\relax\let\pb@B\(\let\pb@C\)\def\pb@D{\pb@B
 %%
 \def\openproofbox{\def\proofboxbottomside{\hfill}} %%
 %% \subsection{Miscellaneous logical notations}
+%% Premises and assumptions
+\def\premise{\hbox{premise}}
+\def\asm{\hbox{asm}}
 %%
 %% Print the names of the introduction and elimination rules, for example:
 %%  \begin{quote}
@@ -399,8 +402,9 @@ proofs: enclose \string\+ and \string\* in \string\(\string\), not \string\[%
 \let\pb@g#1\advance\proofcolumns\@ne\global\prooflinetotal\pb@h
 \leftmostproofboxfalse\pb@p\pb@t}%
 % Variant of \pb@j for stuck-together boxes that keeps line numbering in all columns
+% and continues numbering sequentially across cases (not restarting in each case)
 \def\pb@j@together#1{\pb@q\pb@k
-\let\pb@g#1\advance\proofcolumns\@ne\global\prooflinetotal\pb@h
+\let\pb@g#1\advance\proofcolumns\@ne
 \pb@p\pb@t}%
 \def\pb@k{\pb@g\pb@V\pb@M{\wd\pb@L}\advance
 \pb@O\wd\pb@L\ifnum\pb@i<\prooflinetotal\edef\pb@i{\the\prooflinetotal}\fi
