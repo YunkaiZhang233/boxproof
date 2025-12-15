@@ -1,6 +1,6 @@
 \documentclass{article}
 \usepackage{graphicx} % Required for inserting images
-\usepackage{hyperref}
+\usepackage{url}
 \usepackage{boxproof}
 \usepackage{minted}
 \usepackage[svgnames]{xcolor}
@@ -124,7 +124,7 @@ The original package also uses \verb/\( ... \)/ and \verb/\[ ... \]/ to start an
 
 Just beware that due to this reason, don't use \verb/\( ... \)/ and \verb/\[ ... \]/ within the proofbox-wrapped environments, as they will have clashes. For the sake of this course you won't need to do so. However, feel free to use them outside of the proofbox environment.
 
-\textbf{Don't insert extra blank lines as this breaks the proofs!} If you really need actual blank lines, use \verb/\\/.
+\textbf{Don't insert extra blank lines as this breaks the proofs!} If you really need actual blank lines, use \verb/\\/. But feel free to use comment lines via \verb/%/. But also feel free to break the lines in your code - as long as there are no blank ones.
 
 \subsection{Notations and Symbols}
 By default, everything is in math-mode. If you need to write text, use \verb/\hbox{your text}/. Note that \verb/\premise/, \verb/\asm/, \verb/lawofem/, and \verb/\lem/ are predefined in this customised package to represent "premise", "assumption", "LEM", and "lemma" respectively, so no need to wrap them in \verb/\hbox{}/.
@@ -149,20 +149,140 @@ It is totally optional to use them, but it looks nicer.
   \item \verb/\doublenegintro/ for $\doublenegintro$, \verb/\doublenegelim/ for $\doublenegelim$
   \item \verb/\bottomintro/ for $\bottomintro$, \verb/\bottomelim/ for $\bottomelim$
   \item \verb/\iffintro/ for $\iffintro$, \verb/\iffelim/ for $\iffelim$
-  \item \verb/\forallintro/ for $\forallintro$, \verb/\forallelim/ for $\forallelim$
+  \item \verb/\forallintroconst/ for $\forallintroconst$, \verb/\forallelim/ for $\forallelim$
   \item \verb/\existsintro/ for $\existsintro$, \verb/\existselim/ for $\existselim$
   \item \verb/\tick{n}/ for $\tick{n}$ where \textit{n} is the line number you are ticking off
 \end{itemize}
 
 \section{Example Usages}
 
-Here are some exemplar natural deduction proofs rendered with this modified package, taken from unassessed PMT exercises. You can find the source code in the tex file.
+Here are some exemplar natural deduction proofs rendered with this modified package, taken from unassessed PMT exercises.
 
 \subsection{PMT Logic Exercise 4, Question 1}
 Let $A$ and $B$ be formulas in propositional logic. Using natural deduction, prove that $(A \land B) \lor A \leftrightarrow A \land (A \lor B)$ is a theorem.
 
-% \begin{proofbox}
 
-% \end{proofbox}
+\begin{proofbox}
+  % To show: (A ∧ B) ∨ A ↔ A ∧ (A ∨ B)
+  % We first show (A ∧ B) ∨ A → A ∧ (A ∨ B)
+  \open
+    \label{lhs1}\: (A \land B) \lor A \= \asm \\
+    \openAlt
+      \: A \land B \= \asm \\
+      \: A \= \andelim(2) \\
+      \: A \lor B \= \orintro(3) \\
+      \: A \land (A \lor B) \= \andintro(3, 4) \\
+    \splitAlt
+      \: A \= \asm \\
+      \: A \lor B \= \orintro(6) \\
+      \: A \land (A \lor B) \= \andintro(6, 7) \\
+    \closeAlt
+    \label{rhs1}\: A \land (A \lor B) \= \orelim(\ref{lhs1}, 2-5, 6-8) \\
+  \close
+  \: (A \land B) \lor A \implic A \land (A \lor B)  \= \impliesintro(\ref{lhs1}, \ref{rhs1}) \\
+  % Now we show A ∧ (A ∨ B) → (A ∧ B) ∨ A
+  \openAlt
+    \label{rhs2}\: A \land (A \lor B) \= \asm \\
+    \: A \= \andelim(\ref{rhs2}) \\
+    \label{lhs2}\: (A \land B) \lor A \= \orintro(12) \\
+  \closeAlt
+  \: A \land (A \lor B) \implic (A \land B) \lor A \= \impliesintro(\ref{rhs2}, \ref{lhs2}) \\
+  % Therefore, by ↔ introduction, we have the desired result.
+  \: ((A \land B) \lor A) \leftrightarrow (A \land (A \lor B)) \= \iffintro(10, 14)
+\end{proofbox}
+
+\begin{minted}{latex}
+\begin{proofbox}
+  % To show: (A \land B) \lor A \iff A \land (A \lor B)
+  % We first show (A \land B) \lor A \implies A \land (A \lor B)
+  \open
+    \label{lhs1}\: (A \land B) \lor A \= \asm \\
+    \openAlt
+      \: A \land B \= \asm \\
+      \: A \= \andelim(2) \\
+      \: A \lor B \= \orintro(3) \\
+      \: A \land (A \lor B) \= \andintro(3, 4) \\
+    \splitAlt
+      \: A \= \asm \\
+      \: A \lor B \= \orintro(6) \\
+      \: A \land (A \lor B) \= \andintro(6, 7) \\
+    \closeAlt
+    \label{rhs1}\: A \land (A \lor B) \= \orelim(\ref{lhs1}, 2-5, 6-8) \\
+  \close
+  \: (A \land B) \lor A \implic A \land (A \lor B)  \= \impliesintro(\ref{lhs1}, \ref{rhs1}) \\
+  % Now we show A \land (A \lor B) \implies (A \land B) \lor A
+  \openAlt
+    \label{rhs2}\: A \land (A \lor B) \= \asm \\
+    \: A \= \andelim(\ref{rhs2}) \\
+    \label{lhs2}\: (A \land B) \lor A \= \orintro(12) \\
+  \closeAlt
+  \: A \land (A \lor B) \implic (A \land B) \lor A \= \impliesintro(\ref{rhs2}, \ref{lhs2}) \\
+  % Therefore, by iff introduction, we have the desired result.
+  \: ((A \land B) \lor A) \leftrightarrow (A \land (A \lor B)) \= \iffintro(10, 14)
+\end{proofbox}
+\end{minted}
+
+\subsection{FOL Exercise}
+This is the last exercise in FOL slides.
+
+\begin{quote}
+Show that $\vdash a = b \leftrightarrow \forall x. (x = a \implic x = b)$.
+\end{quote}
+
+\subsubsection*{Proof}
+\begin{proofbox}
+  \open
+    \label{lhs1} \: a = b \= \asm \\ % 1
+    \open
+      \: c \= \forallintroconst \\ % 2
+      \open
+        \: c = a \= \asm \\ % 3
+        \: c = b \= =\hbox{sub}(1, 3) \\ % 4
+      \close
+      \: c = a \implic c = b \= \impliesintro(3, 4) \\
+    \close
+    \label{rhs1} \: \forall x. (x = a \implic x = b) \= \forallintro(2-5) \\
+  \close
+  \label{goright}\: a = b \rightarrow \forall x. (x = a \implic x = b) \= \impliesintro(\ref{lhs1}, \ref{rhs1}) \\
+  \open
+    \label{rhs2} \: \forall x. (x = a \implic x = b) \= \asm \\
+    \label{rule1} \: a = a \implic a = b \= \forallelim(\ref{rhs2}) \\
+    \label{refla}\: a = a \= \hbox{refl} \\
+    \label{lhs2} \: a = b \= \implieselim(\ref{rule1}, \ref{refla}) \\
+  \close
+  \label{goleft}\: \forall x. (x = a \implic x = b) \rightarrow a = b \= \impliesintro(\ref{rhs2}, \ref{lhs2}) \\
+  \: a = b \leftrightarrow \forall x. (x = a \implic x = b) 
+    \= \iffintro(\ref{goright}, \ref{goleft}) \\
+\end{proofbox}
+
+\subsubsection{Code}
+\begin{minted}{latex}
+\begin{proofbox}
+  \open
+    \label{lhs1} \: a = b \= \asm \\ % 1
+    \open
+      \: c \= \forallintroconst \\ % 2
+      \open
+        \: c = a \= \asm \\ % 3
+        \: c = b \= =\hbox{sub}(1, 3) \\ % 4
+      \close
+      \: c = a \implic c = b \= \impliesintro(3, 4) \\
+    \close
+    \label{rhs1} \: \forall x. (x = a \implic x = b) \= \forallintro(2-5) \\
+  \close
+  \label{goright}\: a = b \rightarrow \forall x. (x = a \implic x = b) 
+      \= \impliesintro(\ref{lhs1}, \ref{rhs1}) \\
+  \open
+    \label{rhs2} \: \forall x. (x = a \implic x = b) \= \asm \\
+    \label{rule1} \: a = a \implic a = b \= \forallelim(\ref{rhs2}) \\
+    \label{refla}\: a = a \= \hbox{refl} \\
+    \label{lhs2} \: a = b \= \implieselim(\ref{rule1}, \ref{refla}) \\
+  \close
+  \label{goleft}\: \forall x. (x = a \implic x = b) \rightarrow a = b 
+      \= \impliesintro(\ref{rhs2}, \ref{lhs2}) \\
+  \: a = b \leftrightarrow \forall x. (x = a \implic x = b) 
+      \= \iffintro(\ref{goright}, \ref{goleft}) \\
+\end{proofbox}  
+\end{minted}
 
 \end{document}
